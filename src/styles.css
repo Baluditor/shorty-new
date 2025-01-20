@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  background-color: #fbf2ea;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.mat-mdc-menu-content {
+  background-color: white;
+  padding: 0 !important;
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+  min-width: max-content !important;
+  background-color: black;
+  color: white;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: white !important;
+  border-radius: 0px !important;
+  border-top: 1px solid black !important;
+  border-left: 1px solid black !important;
+  border-right: 1px solid black !important;
+}
