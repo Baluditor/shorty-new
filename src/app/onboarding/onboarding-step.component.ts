@@ -4,18 +4,15 @@ import {
   inject,
   input,
   InputSignal,
+  signal,
+  WritableSignal,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserNameInputComponent } from '../shared/components/user-name-input.component';
 import { OnboardingService } from './onboarding.service';
 
 @Component({
@@ -25,51 +22,35 @@ import { OnboardingService } from './onboarding.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    UserNameInputComponent,
   ],
   template: `
     <div class="mx-auto w-1/3 p-4">
       <div class="flex flex-col gap-8">
         <h2 class="text-3xl font-bold">SHORTY</h2>
-        <div>
-          <form
-            [formGroup]="form"
-            (ngSubmit)="updateOnboardingStep(toStep())"
-            class="flex flex-col gap-6">
-            <div class="flex flex-col gap-6">
-              <h1 class="text-4xl font-bold">
-                <ng-content select="[title]"></ng-content>
-              </h1>
-              <p class="text-lg">
-                <ng-content select="[description]"></ng-content>
-              </p>
-              @if (showUsernameInput()) {
-                <mat-form-field class="w-full">
-                  <input
-                    matInput
-                    formControlName="username"
-                    placeholder="joinshorty.com/Username" />
-                  @if (this.hasError('username', 'required')) {
-                    <mat-error>Username is required</mat-error>
-                  }
-                  @if (this.hasError('username', 'minlength')) {
-                    <mat-error
-                      >Username must be at least 3 characters</mat-error
-                    >
-                  }
-                  @if (this.hasError('username', 'usernameTaken')) {
-                    <mat-error>This username is already taken</mat-error>
-                  }
-                </mat-form-field>
-              }
-            </div>
-            <button
-              type="submit"
-              [disabled]="form.invalid"
-              class="text-right disabled:opacity-50">
-              Continue
-            </button>
-          </form>
+        <div class="flex flex-col gap-6">
+          <h1 class="text-4xl font-bold">
+            <ng-content select="[title]"></ng-content>
+          </h1>
+          <p class="text-lg">
+            <ng-content select="[description]"></ng-content>
+          </p>
+          @if (showUsernameInput()) {
+            <app-user-name-input
+              [isOnboarding]="true"
+              (isFormValid)="updateIsFormValid($event)"
+              (userName)="updateUserName($event)"
+              (formSubmitted)="updateOnboardingStep(toStep())" />
+          }
         </div>
+        @if (!showUsernameInput()) {
+          <button
+            (click)="updateOnboardingStep(toStep())"
+            type="submit"
+            class="text-right">
+            Continue
+          </button>
+        }
       </div>
     </div>
   `,
@@ -84,31 +65,28 @@ export class OnboardingStepComponent {
   toStep: InputSignal<number> = input.required<number>();
   showUsernameInput: InputSignal<boolean> = input<boolean>(false);
 
-  form = new FormGroup({
-    username: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      asyncValidators: [
-        async control => {
-          if (!control.value) {
-            return null;
-          }
-          const takenUsername: boolean =
-            await this.onboardingService.checkIfUserNameTaken(control.value);
-          if (takenUsername) {
-            this.form.markAllAsTouched();
-            return { usernameTaken: true };
-          }
-          return null;
-        },
-      ],
-    }),
-  });
+  isFormValid: WritableSignal<boolean> = signal(false);
+  userName: WritableSignal<string> = signal('');
+
+  updateIsFormValid(isValid: boolean) {
+    console.log('updateIsFormValid', isValid);
+
+    this.isFormValid.set(isValid);
+  }
+
+  updateUserName(userName: string) {
+    console.log('updateUserName', userName);
+
+    this.userName.set(userName);
+  }
 
   updateOnboardingStep(step: number) {
+    console.log('updateOnboardingStep', step);
+
     if (this.showUsernameInput()) {
-      if (this.form.valid) {
+      if (this.isFormValid()) {
         try {
-          const username = this.form.get('username')!.value!;
+          const username = this.userName();
           this.onboardingService.setTakenUsername(username);
           this.authService.updateUser({
             displayName: username,
@@ -121,7 +99,6 @@ export class OnboardingStepComponent {
           console.error(error);
         }
       }
-      this.form.markAllAsTouched();
       return;
     }
     this.authService.updateUser({
@@ -129,7 +106,7 @@ export class OnboardingStepComponent {
     });
   }
 
-  hasError(controlName: string, errorName: string) {
-    return this.form.get(controlName)?.hasError(errorName);
-  }
+  handleFormAction = () => {
+    this.updateOnboardingStep(this.toStep());
+  };
 }

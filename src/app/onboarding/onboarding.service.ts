@@ -40,6 +40,7 @@ export class OnboardingService {
     return data.length > 0;
   }
 
+  // Move this to the auth service
   async setTakenUsername(displayName: string) {
     const uid = this.authService.uid();
     if (!uid || !displayName) {

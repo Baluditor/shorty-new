@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { homeGuard } from './guards/home.guard';
-// import { onboardingGuard } from './guards/onboarding.guard';
+import { onboardingGuard } from './guards/onboarding.guard';
 
 export const routes: Routes = [
   {
@@ -14,7 +14,7 @@ export const routes: Routes = [
       import('./onboarding/onboarding.component').then(
         c => c.OnboardingComponent
       ),
-    // canActivate: [onboardingGuard],
+    canActivate: [onboardingGuard],
   },
   {
     path: '',
@@ -31,6 +31,11 @@ export const routes: Routes = [
     path: 'your-link',
     loadComponent: () =>
       import('./user/your-link.component').then(c => c.YourLinkComponent),
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./user/settings.component').then(c => c.SettingsComponent),
   },
   {
     path: '**',

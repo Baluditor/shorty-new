@@ -28,18 +28,21 @@ import { SpotService } from '../services/spot.service';
         </button>
         <mat-menu xPosition="before" yPosition="below" #profileMenu="matMenu">
           <button
-            (click)="goToQrCode()"
+            (click)="navigateTo('/qr-code')"
             style="background-color: white; color: black;"
             mat-menu-item>
             My Shorty QR code
           </button>
           <button
-            (click)="goToYourLink()"
+            (click)="navigateTo('/your-link')"
             style="background-color: white; color: black;"
             mat-menu-item>
             My Shorty link
           </button>
-          <button style="background-color: white; color: black;" mat-menu-item>
+          <button
+            (click)="navigateTo('/settings')"
+            style="background-color: white; color: black;"
+            mat-menu-item>
             Settings
           </button>
         </mat-menu>
@@ -67,11 +70,7 @@ export class HomeComponent {
   readonly spotService = inject(SpotService);
   readonly router = inject(Router);
 
-  goToQrCode() {
-    this.router.navigate(['/qr-code']);
-  }
-
-  goToYourLink() {
-    this.router.navigate(['/your-link']);
+  navigateTo(path: string) {
+    this.router.navigate([path]);
   }
 }

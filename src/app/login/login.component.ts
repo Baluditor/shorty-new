@@ -15,9 +15,13 @@ import { AuthService } from '../services/auth.service';
   template: `
     @if (authService.user() === null) {
       <div
-        class="ga mx-auto flex h-full max-w-[260px] flex-col items-center justify-center p-4">
+        class="mx-auto flex h-full max-w-[360px] flex-col items-center justify-center gap-8 p-8">
         <h1 class="text-4xl font-bold">Shorty</h1>
-        <button (click)="signInWithGoogle()" mat-raised-button color="primary">
+        <button
+          style="background-color: white; color: black; width: fit-content; padding: 26px; border-radius: 0;"
+          (click)="signInWithGoogle()"
+          mat-raised-button
+          color="primary">
           <mat-icon
             svgIcon="google"
             style="width: 26px; height: 26px"></mat-icon>

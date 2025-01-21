@@ -7,13 +7,13 @@ import {
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { DisplayLinkAndQrCodeComponent } from './display-link-and-qr-code.component';
+import { UserLayoutComponent } from './user-layout.component';
 
 @Component({
   selector: 'app-your-link',
-  imports: [DisplayLinkAndQrCodeComponent, MatSnackBarModule],
+  imports: [UserLayoutComponent, MatSnackBarModule],
   template: `
-    <app-display-link-and-qr-code>
+    <app-user-layout>
       <h1 header>QR Shorty Link</h1>
       <p description>
         Here is your unique Shorty link that will direct people to your
@@ -26,7 +26,7 @@ import { DisplayLinkAndQrCodeComponent } from './display-link-and-qr-code.compon
           https://shorty-minimal.web.app/shortlist/{{ displayName() }}
         </button>
       </ng-container>
-    </app-display-link-and-qr-code>
+    </app-user-layout>
   `,
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,

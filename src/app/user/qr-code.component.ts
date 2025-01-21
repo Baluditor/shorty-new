@@ -7,14 +7,14 @@ import {
 import { Router } from '@angular/router';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { AuthService } from '../services/auth.service';
-import { DisplayLinkAndQrCodeComponent } from './display-link-and-qr-code.component';
+import { UserLayoutComponent } from './user-layout.component';
 
 @Component({
   selector: 'app-qr-code',
-  imports: [QRCodeComponent, DisplayLinkAndQrCodeComponent],
+  imports: [QRCodeComponent, UserLayoutComponent],
   standalone: true,
   template: `
-    <app-display-link-and-qr-code>
+    <app-user-layout>
       <h1 header>QR Code</h1>
       <p description>
         Here is your unique Shorty QR code that will direct people to your
@@ -36,7 +36,8 @@ import { DisplayLinkAndQrCodeComponent } from './display-link-and-qr-code.compon
           <div class="h-[256px] w-[256px]"></div>
         }
       </ng-container>
-    </app-display-link-and-qr-code>
+      your</app-user-layout
+    >
   `,
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,

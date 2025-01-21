@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-display-link-and-qr-code',
+  selector: 'app-user-layout',
   imports: [MatButtonModule],
   template: `
     <div class="mx-auto flex w-1/3 flex-col items-center gap-4 p-4">
@@ -25,7 +25,7 @@ import { Router } from '@angular/router';
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DisplayLinkAndQrCodeComponent {
+export class UserLayoutComponent {
   private readonly router = inject(Router);
 
   back() {

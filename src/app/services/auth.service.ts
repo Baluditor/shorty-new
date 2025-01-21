@@ -25,14 +25,19 @@ import {
   setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
+import { TakenUsernameModel } from '../models/taken-username.model';
 import { UserModel } from '../models/user.model';
+
+const COLLECTION_NAME = 'shorty_simple_taken_usernames';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly auth = inject(Auth);
+  private readonly router = inject(Router);
   private readonly firestore = inject(Firestore);
 
   readonly user$: Observable<UserModel | null> = authState(this.auth).pipe(
@@ -113,5 +118,22 @@ export class AuthService {
       );
       await updateDoc(userRef, user);
     }
+  }
+
+  async setTakenUsername(displayName: string) {
+    if (!this.uid() || !displayName) {
+      throw new Error('User not logged in');
+    }
+    const data: TakenUsernameModel = {
+      displayName,
+      username: displayName.toLowerCase(),
+    };
+    const docRef = doc(this.firestore, COLLECTION_NAME, this.uid()!);
+    await setDoc(docRef, data);
+  }
+
+  async logOut() {
+    await this.auth.signOut();
+    this.router.navigate(['/login']);
   }
 }
