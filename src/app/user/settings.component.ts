@@ -44,8 +44,6 @@ export class SettingsComponent {
   userName: WritableSignal<string> = signal('');
 
   updateUserName() {
-    console.log('updateUserName', this.userName());
-
     this.authService.updateUser({
       displayName: this.userName(),
     });

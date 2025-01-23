@@ -3,7 +3,9 @@ import {
   Component,
   inject,
   input,
+  InputSignal,
   output,
+  OutputEmitterRef,
   Signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,6 +18,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
 import { OnboardingService } from '../../onboarding/onboarding.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -62,8 +65,7 @@ import { AuthService } from '../../services/auth.service';
           <button (click)="logOut()" class="text-right">Log Out</button>
           <button
             type="submit"
-            (click)="onFormSubmitted()"
-            [disabled]="form.invalid"
+            (click)="navigateToDeleteAccount()"
             class="text-right">
             Delete Account
           </button>
@@ -87,12 +89,13 @@ import { AuthService } from '../../services/auth.service';
 export class UserNameInputComponent {
   private readonly authService = inject(AuthService);
   private readonly onboardingService = inject(OnboardingService);
+  private readonly router = inject(Router);
 
-  isOnboarding = input<boolean>(false);
+  isOnboarding: InputSignal<boolean> = input<boolean>(false);
 
-  userName = output<string>();
-  isFormValid = output<boolean>();
-  formSubmitted = output<void>();
+  userName: OutputEmitterRef<string> = output<string>();
+  isFormValid: OutputEmitterRef<boolean> = output<boolean>();
+  formSubmitted: OutputEmitterRef<void> = output<void>();
 
   displayName: Signal<string | undefined> = this.authService.displayName;
 
@@ -129,6 +132,7 @@ export class UserNameInputComponent {
 
   constructor() {
     this.userName.emit(this.form.get('username')?.value || '');
+
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       this.userName.emit(this.form.get('username')?.value || '');
     });
@@ -151,5 +155,9 @@ export class UserNameInputComponent {
 
   logOut(): void {
     this.authService.logOut();
+  }
+
+  navigateToDeleteAccount(): void {
+    this.router.navigate(['/settings/delete-account']);
   }
 }

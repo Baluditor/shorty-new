@@ -38,6 +38,18 @@ export const routes: Routes = [
       import('./user/settings.component').then(c => c.SettingsComponent),
   },
   {
+    path: 'settings/delete-account',
+    loadComponent: () =>
+      import('./user/delete-account.component').then(
+        c => c.DeleteAccountComponent
+      ),
+  },
+  {
+    path: 'spots/add-spot',
+    loadComponent: () =>
+      import('./spots/add-spot.component').then(c => c.AddSpotComponent),
+  },
+  {
     path: '**',
     redirectTo: '/login',
   },

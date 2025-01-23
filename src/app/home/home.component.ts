@@ -11,7 +11,7 @@ import { SpotService } from '../services/spot.service';
   selector: 'app-home',
   imports: [MatIconModule, NgOptimizedImage, MatButtonModule, MatMenuModule],
   template: `
-    <main class="mx-auto flex h-screen w-1/3 flex-col p-4">
+    <main class="mx-auto flex w-1/3 flex-col">
       <header class="flex items-center justify-between">
         <h1 class="text-2xl font-bold">Shorty</h1>
         <button [matMenuTriggerFor]="profileMenu">
@@ -48,12 +48,13 @@ import { SpotService } from '../services/spot.service';
         </mat-menu>
       </header>
       @if (this.spotService.spots.length === 0) {
-        <div class="ga flex flex-col items-center pt-20 text-center">
+        <div class="ga flex flex-col items-center gap-4 pt-20 text-center">
           <h2 class="text-2xl font-bold">Add your first spot</h2>
           <p class="text-lg">
             Recommend a place that truly stands out and tag why it's special
           </p>
           <button
+            (click)="navigateTo('/spots/add-spot')"
             mat-flat-button
             style="background-color: #F2D27D; color: black; width: fit-content; padding: 0 26px; border-radius: 0;">
             Add spot

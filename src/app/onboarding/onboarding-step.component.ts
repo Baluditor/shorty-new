@@ -25,7 +25,7 @@ import { OnboardingService } from './onboarding.service';
     UserNameInputComponent,
   ],
   template: `
-    <div class="mx-auto w-1/3 p-4">
+    <div class="mx-auto w-1/3">
       <div class="flex flex-col gap-8">
         <h2 class="text-3xl font-bold">SHORTY</h2>
         <div class="flex flex-col gap-6">
