@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   selector: 'app-user-layout',
   imports: [MatButtonModule],
   template: `
-    <div class="mx-auto flex w-1/3 flex-col items-center gap-4">
+    <div class="mx-auto flex w-full flex-col items-center gap-4 md:w-1/3">
       <h1 class="text-2xl font-bold">
         <ng-content select="[header]"></ng-content>
       </h1>

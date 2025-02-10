@@ -50,6 +50,27 @@ export const routes: Routes = [
       import('./spots/add-spot.component').then(c => c.AddSpotComponent),
   },
   {
+    path: 'countries',
+    loadComponent: () =>
+      import('./spots/spots.component').then(c => c.SpotsComponent),
+  },
+
+  {
+    path: 'spots/:country',
+    loadComponent: () =>
+      import('./spots/cities.component').then(c => c.CitiesComponent),
+  },
+  {
+    path: 'spots/:country/:city',
+    loadComponent: () =>
+      import('./spots/categories.component').then(c => c.CategoriesComponent),
+  },
+  {
+    path: 'spots/:country/:city/:category',
+    loadComponent: () =>
+      import('./spots/spots.component').then(c => c.SpotsComponent),
+  },
+  {
     path: '**',
     redirectTo: '/login',
   },

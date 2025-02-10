@@ -13,3 +13,14 @@ export const categories: Category = {
   bar: 'Bar',
   night_club: 'Night club',
 };
+
+export type CategoryKey =
+  | 'restaurant'
+  | 'bakery'
+  | 'cafe'
+  | 'aquarium'
+  | 'spa'
+  | 'amusement_park'
+  | 'art_gallery'
+  | 'bar'
+  | 'night_club';

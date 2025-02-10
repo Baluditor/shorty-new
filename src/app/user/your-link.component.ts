@@ -44,7 +44,6 @@ export class YourLinkComponent {
     );
     this.snackBar.open('Link copied to clipboard', undefined, {
       duration: 2000,
-      panelClass: 'toast-success',
     });
     this.router.navigate(['/']);
   }

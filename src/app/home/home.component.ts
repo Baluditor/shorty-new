@@ -1,18 +1,32 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { SpotService } from '../services/spot.service';
+import { AddYourFirstSpotComponent } from '../spots/add-your-first-spot.component';
+import { CountriesComponent } from '../spots/countries.component';
+import { SpotService } from '../spots/spot.service';
 
 @Component({
   selector: 'app-home',
-  imports: [MatIconModule, NgOptimizedImage, MatButtonModule, MatMenuModule],
+  imports: [
+    MatIconModule,
+    NgOptimizedImage,
+    MatButtonModule,
+    MatMenuModule,
+    AddYourFirstSpotComponent,
+    CountriesComponent,
+  ],
   template: `
-    <main class="mx-auto flex w-1/3 flex-col">
-      <header class="flex items-center justify-between">
+    <main class="mx-auto flex w-full flex-col md:w-1/3">
+      <header class="flex items-center justify-between px-4">
         <h1 class="text-2xl font-bold">Shorty</h1>
         <button [matMenuTriggerFor]="profileMenu">
           <span class="rounded-full bg-black">
@@ -47,19 +61,12 @@ import { SpotService } from '../services/spot.service';
           </button>
         </mat-menu>
       </header>
-      @if (this.spotService.spots.length === 0) {
-        <div class="ga flex flex-col items-center gap-4 pt-20 text-center">
-          <h2 class="text-2xl font-bold">Add your first spot</h2>
-          <p class="text-lg">
-            Recommend a place that truly stands out and tag why it's special
-          </p>
-          <button
-            (click)="navigateTo('/spots/add-spot')"
-            mat-flat-button
-            style="background-color: #F2D27D; color: black; width: fit-content; padding: 0 26px; border-radius: 0;">
-            Add spot
-          </button>
-        </div>
+      @if (!loading()) {
+        @if (this.spotService.spots().length === 0) {
+          <app-add-your-first-spot />
+        } @else {
+          <app-countries />
+        }
       }
     </main>
   `,
@@ -70,6 +77,8 @@ export class HomeComponent {
   readonly authService = inject(AuthService);
   readonly spotService = inject(SpotService);
   readonly router = inject(Router);
+
+  loading: Signal<boolean> = this.spotService.loading;
 
   navigateTo(path: string) {
     this.router.navigate([path]);
